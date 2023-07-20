@@ -1,0 +1,15 @@
+header{
+  padding: 24px 50px;
+  display: flex;
+  gap:30px;
+  justify-content: center;
+}
+
+header a{
+  font-size: large;
+  color: black;
+}
+
+header a.active{
+  text-decoration: underline;
+}
