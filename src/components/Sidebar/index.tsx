@@ -10,12 +10,12 @@ const { Sider } = Layout;
 const Sidebar = () => {
   const dispatch = useDispatch();
   const filter = useSelector((state: RootState) => state.notes.filter);
-  const  tags = [...new Set(useSelector((state: RootState) => state.notes.notes.map(note => note.tags)).flat())];
+  const tags = [...new Set(useSelector((state: RootState) => state.notes.notes.map(note => note.tags)).flat())];
   const handleCheckbox = (tag: string) => (e: CheckboxChangeEvent) => {
-    if(e.target.checked){
-      dispatch(addTagToFilter({tag}));
-    }else{
-      dispatch(removeTagFromFilter({tag}));
+    if (e.target.checked) {
+      dispatch(addTagToFilter({ tag }));
+    } else {
+      dispatch(removeTagFromFilter({ tag }));
     }
   };
 
@@ -38,7 +38,8 @@ const Sidebar = () => {
         width: "200px"
       }}
     >
-      <Menu 
+      <Menu
+        defaultOpenKeys={["main"]}
         items={items}
         mode="inline"
         style={{

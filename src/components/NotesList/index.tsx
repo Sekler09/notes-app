@@ -11,7 +11,6 @@ const NotesList = () => {
     <>
       <Space direction="horizontal" wrap align="center" size={30}>
         {notes.filter(note => filter.length ? note.tags.filter(tag => filter.includes(tag)).length : true).map((note) => <NoteCard key={note.id} {...note}/>)}
-        {filter}
       </Space>
     </>
   );

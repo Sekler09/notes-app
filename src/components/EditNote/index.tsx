@@ -1,30 +1,38 @@
+import { useSelector } from "react-redux";
+import {useParams, useNavigate} from "react-router-dom";
+import { RootState } from "../../store";
 import { Button, Form, Input, Space, Layout, Tag } from "antd";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import "./styles.css";
 import { useDispatch } from "react-redux";
-import { addNote } from "../../store/slices/notesSlice";
+import { editNote } from "../../store/slices/notesSlice";
+// import * as $ from "jquery";
+// $(".content-area").highlightWithinTextarea({
+//   highlight: /#[a-z0-9_]+/gi
+// });
 
 const { TextArea } = Input;
 const { Content } = Layout;
-
-const AddNewNoteForm = () => {
+const EditNote = () => {
+  const {id} = useParams();
   const navigate = useNavigate();
+  const note = useSelector((state: RootState) => state.notes.notes.find(note => note.id === Number(id)));
+  if(!note){
+    navigate("/");
+  }
   const dispatch = useDispatch();
-  const [content, setContent] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
-
+  const [content, setContent] = useState(note!.content);
+  const [tags, setTags] = useState<string[]>(note!.tags);
   useEffect(() => {
     setTags([...new Set(content.toLowerCase().match(/#[a-z0-9_]+/gi))]);
   }, [content]);
 
   const onFormFinish = ({ title, content }: { title: string; content: string }) => {
-    dispatch(addNote({ title: title.trim(), content: content.trim(), tags }));
+    dispatch(editNote({ title: title.trim(), content: content.trim(), tags, id: Number(id) }));
     navigate("/");
   };
 
-  const onFormReset = () => {
-    setContent("");
+  const handleCancelClick = () => {
+    navigate("/");
   };
 
   const handleNoteContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -46,14 +54,13 @@ const AddNewNoteForm = () => {
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           style={{ maxWidth: 600 }}
-          onReset={onFormReset}
         >
           <Form.Item
             label="Title"
             name="title"
             rules={[{ required: true, message: "Title is required" }, { whitespace: true, message: "Title must be not empty" }]}
           >
-            <Input placeholder="Input title" />
+            <Input placeholder="Input title" defaultValue={note?.title} />
           </Form.Item>
           <Form.Item
             label="Content"
@@ -61,7 +68,9 @@ const AddNewNoteForm = () => {
             rules={[{ required: true, message: "Content is required" }, { whitespace: true, message: "Content must be not empty" }]}
           >
             <TextArea
+              className="content-area"
               value={content}
+              defaultValue={note?.content}
               onChange={handleNoteContentChange}
               onFocus={changeHeight}
               placeholder="Input content of note"
@@ -77,7 +86,7 @@ const AddNewNoteForm = () => {
               <Button type="primary" htmlType="submit">
                 Submit
               </Button>
-              <Button htmlType="reset">Reset</Button>
+              <Button type="default" onClick={handleCancelClick}>Cancel</Button>
             </Space>
           </Form.Item>
         </Form>
@@ -86,4 +95,4 @@ const AddNewNoteForm = () => {
   );
 };
 
-export default AddNewNoteForm;
+export default EditNote;

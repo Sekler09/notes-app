@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import Layout from "../components/Layout";
 import Notes from "../pages/Notes";
 import AddNewNote from "../pages/AddNewNote";
+import EditNote from "../components/EditNote";
 
 export const router = createBrowserRouter([{
   path: "/",
@@ -14,6 +15,10 @@ export const router = createBrowserRouter([{
     {
       path: "/notes",
       element: <Notes />
+    },
+    {
+      path: "/notes/:id/edit",
+      element: <EditNote />
     },
     {
       path:"/new-note",
