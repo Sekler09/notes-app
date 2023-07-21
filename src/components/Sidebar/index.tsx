@@ -34,7 +34,11 @@ const Sidebar = () => {
   ];
 
   return (
-    <Sider>
+    <Sider
+      style={{
+        width: "200px"
+      }}
+    >
       <Menu 
         items={items2}
         mode="inline"
