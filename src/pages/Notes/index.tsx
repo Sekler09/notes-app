@@ -1,7 +1,16 @@
-
+import {Layout} from "antd";
+import Sidebar from "../../components/Sidebar";
+const {Content} = Layout;
 const Notes = () => {
   return (
-    <div>Notes</div>
+    <Layout>
+      <Sidebar/>
+      <Content style={{
+        backgroundColor: "white"
+      }}>
+        Notes
+      </Content>
+    </Layout>
   );
 };
 
