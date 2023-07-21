@@ -1,6 +1,8 @@
+import AddNewNoteForm from "../../components/AddNewNoteForm";
+
 const AddNewNote = () => {
   return (
-    <div>AddNewNote</div>
+    <AddNewNoteForm />
   );
 };
 

@@ -1,11 +1,13 @@
-import { Card } from "antd";
+ import { Card } from "antd";
+import { INote } from "../../store/slices/notesSlice";
 
-const NoteCard = () => {
+const NoteCard: React.FC<INote> = ({tags, title, id, content, created_at}) => {
   return (
-    <Card title="Default size card" extra={<a href="#">More</a>} style={{ width: "35vw" }}>
-      <p>Card content</p>
-      <p>Card content</p>
-      <p>Card content</p>
+    <Card title={title} extra={<a href="#">More</a>} style={{ width: "35vw" }}>
+      <p>{created_at.toDateString()}</p>
+      <p>{content}</p>
+      <p>{id}</p>
+      <p>{tags}</p>
     </Card>
   );
 };

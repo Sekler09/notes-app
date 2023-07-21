@@ -1,33 +1,32 @@
 import { Layout, Menu, MenuProps, Checkbox } from "antd";
-import { useState } from "react";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { addTagToFilter, removeTagFromFilter } from "../../store/slices/notesSlice";
 
 const { Sider } = Layout;
 
-const checkboxes = [
-  "apple",
-  "banana"
-];
-
-
 
 const Sidebar = () => {
-  const [boxes, setBoxes] = useState<string[]>([]);
-
-  const handleCheckbox = (name: string) => (e: CheckboxChangeEvent) => {
+  const dispatch = useDispatch();
+  const filter = useSelector((state: RootState) => state.notes.filter);
+  const  tags = [...new Set(useSelector((state: RootState) => state.notes.notes.map(note => note.tags)).flat())];
+  const handleCheckbox = (tag: string) => (e: CheckboxChangeEvent) => {
     if(e.target.checked){
-      setBoxes((prevBoxes) => [...prevBoxes, name]);
+      dispatch(addTagToFilter({tag}));
     }else{
-      setBoxes((prevBoxes) => prevBoxes.filter(box => box !== name));
+      dispatch(removeTagFromFilter({tag}));
     }
   };
 
-  const items2: MenuProps["items"] = [
+
+
+  const items: MenuProps["items"] = [
     {
       label: "Tags",
       key: "main",
-      children: checkboxes.map(box => ({
-        label: <Checkbox onChange={handleCheckbox(box)}>{box}</Checkbox>,
+      children: tags.map(box => ({
+        label: <Checkbox onChange={handleCheckbox(box)} checked={filter.includes(box)}>{box}</Checkbox>,
         key: box
       }))
     }
@@ -40,14 +39,13 @@ const Sidebar = () => {
       }}
     >
       <Menu 
-        items={items2}
+        items={items}
         mode="inline"
         style={{
           height: "100%",
           minHeight: "300px"
         }}
       />
-      {boxes}
     </Sider>
   );
 };
